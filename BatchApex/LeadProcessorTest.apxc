@@ -1,0 +1,19 @@
+@IsTest
+public class LeadProcessorTest {
+    @TestSetup
+    public static void setup(){
+        List<Lead> llist = new List<Lead>();
+        for (integer i=0; i < 200; i++ ){
+            llist.add(new Lead(LastName = 'lname' + i, Company = 'Company' + 1,LeadSource = 'notdreamforce'));
+        }
+        insert llist;
+    }
+    
+    @IsTest
+    public static void leadprocessortestmethod(){
+        test.startTest();
+        LeadProcessor mylp = new LeadProcessor();
+        Id batchId = Database.executeBatch(mylp);
+        test.stopTest();
+    }
+}
