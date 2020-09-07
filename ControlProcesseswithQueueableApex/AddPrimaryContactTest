@@ -1,0 +1,31 @@
+@istest
+public class AddPrimaryContactTest {
+	@Testsetup
+    public static void setup(){
+        List<Account> alist = new List<Account>();
+        for(integer i=0; i < 100 ;i++){
+            if(i >= 50){
+                alist.add(new Account(Name = 'Account'+i, BillingState = 'CA'));
+            }
+            else{
+                alist.add(new Account(Name = 'Account'+i, BillingState = 'NY'));
+            }
+        }
+        insert alist;
+        
+    }
+    @isTest
+    public static void AddPrimaryContactTestMethod(){
+        Contact inputcontact = new Contact(LastName = 'inputContact',FirstName='This is the');
+        AddPrimaryContact insertsamecontacts = new AddPrimaryContact(inputcontact,'CA');
+     	Test.startTest();
+        System.enqueueJob(insertsamecontacts);
+        Test.stopTest();
+       	List<Contact> testcontactlist = new List<Contact>([Select id,LastName,FirstName, Contact.Account.BillingState 
+                                                           FROM Contact 
+                                                           WHERE LastName = 'inputContact' AND
+                                         					FirstName = 'This is the' AND
+                                        					Contact.Account.BillingState = 'CA']);
+       	System.assertEquals(50, testcontactlist.size());
+    }
+}
