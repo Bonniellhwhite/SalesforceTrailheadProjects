@@ -8,6 +8,7 @@ global class LeadProcessor implements Database.Batchable<sObject> {
         List<Lead> updatedLeads = new List<Lead>();
         for (Lead thislead : LList){
             thislead.LeadSource = 'Dreamforce';
+            updatedLeads.add(thislead);
         }
         update updatedLeads;
     }    
